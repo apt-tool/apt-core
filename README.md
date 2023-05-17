@@ -1,5 +1,9 @@
 # Comparison of Scheduling Approaches in MAC
 
+![](https://img.shields.io/badge/year-2023-red)
+![](https://img.shields.io/badge/topic-data%20communications-yellowgreen)
+![](https://img.shields.io/badge/paper-researchgate-brightgreen)
+
 Comparison of Scheduling Approaches in Medium Access Control protocols. In this paper
 we discuss about Medium Access Control protocols and the scheduling approaches in it. Then
 we compare these approaches to see which one is better.
