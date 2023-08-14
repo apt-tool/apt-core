@@ -1,0 +1,30 @@
+core:
+  port: 9090
+  enable: true
+  workers: 1
+  secret: "secret"
+http:
+  port: 8080
+  core: 'http://localhost:9090/api'
+  dev_mode: true
+jwt:
+  private_key: 'super'
+  expire_time: 180 # minute
+redis:
+  host: 'localhost:6379'
+  pass: ''
+mysql:
+  host: 'localhost'
+  port: 3306
+  user: root
+  pass: 'Amir2222'
+  database: 'apt'
+  migrate: false
+migrate:
+  root: 'admin'
+  pass: '12345'
+  enable: false
+ftp:
+  host: 'http://localhost:9091'
+  secret: 'secret'
+  access: 'access'
