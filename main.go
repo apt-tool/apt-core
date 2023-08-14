@@ -36,10 +36,6 @@ func main() {
 
 	// add sub commands to root
 	root.AddCommand(
-		cmd.API{
-			Cfg: cfg,
-			Db:  db,
-		}.Command(),
 		cmd.Core{
 			Cfg: cfg,
 			Db:  db,

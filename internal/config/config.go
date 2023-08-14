@@ -6,11 +6,8 @@ import (
 
 	"github.com/automated-pen-testing/api/internal/config/core"
 	"github.com/automated-pen-testing/api/internal/config/ftp"
-	"github.com/automated-pen-testing/api/internal/config/http"
 	"github.com/automated-pen-testing/api/internal/config/migration"
-	"github.com/automated-pen-testing/api/internal/storage/redis"
 	"github.com/automated-pen-testing/api/internal/storage/sql"
-	"github.com/automated-pen-testing/api/internal/utils/jwt"
 
 	"github.com/knadh/koanf"
 	"github.com/knadh/koanf/parsers/yaml"
@@ -21,9 +18,6 @@ import (
 
 type Config struct {
 	Core    core.Config      `koanf:"core"`
-	HTTP    http.Config      `koanf:"http"`
-	JWT     jwt.Config       `koanf:"jwt"`
-	Redis   redis.Config     `koanf:"redis"`
 	MySQL   sql.Config       `koanf:"mysql"`
 	Migrate migration.Config `koanf:"migrate"`
 	FTP     ftp.Config       `koanf:"ftp"`

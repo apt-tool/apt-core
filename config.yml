@@ -3,16 +3,6 @@ core:
   enable: true
   workers: 1
   secret: "secret"
-http:
-  port: 8080
-  core: 'http://localhost:9090/api'
-  dev_mode: true
-jwt:
-  private_key: 'super'
-  expire_time: 180 # minute
-redis:
-  host: 'localhost:6379'
-  pass: ''
 mysql:
   host: 'localhost'
   port: 3306
