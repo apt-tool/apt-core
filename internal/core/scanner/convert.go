@@ -3,7 +3,7 @@ package scanner
 import (
 	"encoding/json"
 
-	"github.com/amirhnajafiz/apt-scanner/pkg/proto"
+	"github.com/apt-tool/apt-scanner/pkg/proto"
 )
 
 // convert scanner report to our system report
