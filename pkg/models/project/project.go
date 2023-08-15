@@ -1,7 +1,7 @@
 package project
 
 import (
-	"github.com/automated-pen-testing/api/pkg/models/document"
+	"github.com/apt-tool/apt-core/pkg/models/document"
 
 	"gorm.io/gorm"
 )

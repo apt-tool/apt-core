@@ -1,7 +1,7 @@
 package document
 
 import (
-	"github.com/automated-pen-testing/api/pkg/enum"
+	"github.com/apt-tool/apt-core/pkg/enum"
 
 	"gorm.io/gorm"
 )

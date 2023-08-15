@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"log"
 
-	"github.com/automated-pen-testing/api/internal/config/core"
-	"github.com/automated-pen-testing/api/internal/config/ftp"
-	"github.com/automated-pen-testing/api/internal/config/migration"
-	"github.com/automated-pen-testing/api/internal/storage/sql"
+	"github.com/apt-tool/apt-core/internal/config/core"
+	"github.com/apt-tool/apt-core/internal/config/ftp"
+	"github.com/apt-tool/apt-core/internal/config/migration"
+	"github.com/apt-tool/apt-core/internal/storage/sql"
 
 	"github.com/knadh/koanf"
 	"github.com/knadh/koanf/parsers/yaml"

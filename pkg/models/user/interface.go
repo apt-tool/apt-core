@@ -2,7 +2,7 @@ package user
 
 import (
 	"fmt"
-	"github.com/automated-pen-testing/api/internal/utils/crypto"
+	"github.com/apt-tool/apt-core/internal/utils/crypto"
 	"gorm.io/gorm"
 )
 

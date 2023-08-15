@@ -6,14 +6,14 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/automated-pen-testing/api/internal/config/ftp"
-	"github.com/automated-pen-testing/api/internal/core/ai"
-	"github.com/automated-pen-testing/api/internal/core/scanner"
-	"github.com/automated-pen-testing/api/internal/utils/crypto"
-	"github.com/automated-pen-testing/api/pkg/client"
-	"github.com/automated-pen-testing/api/pkg/enum"
-	"github.com/automated-pen-testing/api/pkg/models"
-	"github.com/automated-pen-testing/api/pkg/models/document"
+	"github.com/apt-tool/apt-core/internal/config/ftp"
+	"github.com/apt-tool/apt-core/internal/core/ai"
+	"github.com/apt-tool/apt-core/internal/core/scanner"
+	"github.com/apt-tool/apt-core/internal/utils/crypto"
+	"github.com/apt-tool/apt-core/pkg/client"
+	"github.com/apt-tool/apt-core/pkg/enum"
+	"github.com/apt-tool/apt-core/pkg/models"
+	"github.com/apt-tool/apt-core/pkg/models/document"
 )
 
 // worker is the smallest unit of our core

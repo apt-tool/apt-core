@@ -1,8 +1,8 @@
 package namespace
 
 import (
-	"github.com/automated-pen-testing/api/pkg/models/project"
-	"github.com/automated-pen-testing/api/pkg/models/user"
+	"github.com/apt-tool/apt-core/pkg/models/project"
+	"github.com/apt-tool/apt-core/pkg/models/user"
 
 	"gorm.io/gorm"
 )

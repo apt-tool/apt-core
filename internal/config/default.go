@@ -1,10 +1,10 @@
 package config
 
 import (
-	"github.com/automated-pen-testing/api/internal/config/core"
-	"github.com/automated-pen-testing/api/internal/config/ftp"
-	"github.com/automated-pen-testing/api/internal/config/migration"
-	"github.com/automated-pen-testing/api/internal/storage/sql"
+	"github.com/apt-tool/apt-core/internal/config/core"
+	"github.com/apt-tool/apt-core/internal/config/ftp"
+	"github.com/apt-tool/apt-core/internal/config/migration"
+	"github.com/apt-tool/apt-core/internal/storage/sql"
 )
 
 func Default() Config {

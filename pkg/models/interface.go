@@ -1,11 +1,11 @@
 package models
 
 import (
-	"github.com/automated-pen-testing/api/pkg/models/document"
-	"github.com/automated-pen-testing/api/pkg/models/namespace"
-	"github.com/automated-pen-testing/api/pkg/models/project"
-	"github.com/automated-pen-testing/api/pkg/models/user"
-	"github.com/automated-pen-testing/api/pkg/models/user_namespace"
+	"github.com/apt-tool/apt-core/pkg/models/document"
+	"github.com/apt-tool/apt-core/pkg/models/namespace"
+	"github.com/apt-tool/apt-core/pkg/models/project"
+	"github.com/apt-tool/apt-core/pkg/models/user"
+	"github.com/apt-tool/apt-core/pkg/models/user_namespace"
 
 	"gorm.io/gorm"
 )

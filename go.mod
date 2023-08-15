@@ -1,4 +1,4 @@
-module github.com/automated-pen-testing/api
+module github.com/apt-tool/apt-core
 
 go 1.20
 

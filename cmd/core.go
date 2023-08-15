@@ -2,13 +2,13 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/automated-pen-testing/api/pkg/client"
+	"github.com/apt-tool/apt-core/pkg/client"
 	"log"
 
-	"github.com/automated-pen-testing/api/internal/config"
-	"github.com/automated-pen-testing/api/internal/core/handler"
-	"github.com/automated-pen-testing/api/internal/core/worker"
-	"github.com/automated-pen-testing/api/pkg/models"
+	"github.com/apt-tool/apt-core/internal/config"
+	"github.com/apt-tool/apt-core/internal/core/handler"
+	"github.com/apt-tool/apt-core/internal/core/worker"
+	"github.com/apt-tool/apt-core/pkg/models"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/spf13/cobra"

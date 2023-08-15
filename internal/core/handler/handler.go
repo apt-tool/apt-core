@@ -1,8 +1,8 @@
 package handler
 
 import (
-	"github.com/automated-pen-testing/api/internal/core/worker"
-	"github.com/automated-pen-testing/api/internal/utils/crypto"
+	"github.com/apt-tool/apt-core/internal/core/worker"
+	"github.com/apt-tool/apt-core/internal/utils/crypto"
 
 	"github.com/gofiber/fiber/v2"
 )

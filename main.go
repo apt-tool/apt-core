@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/automated-pen-testing/api/cmd"
-	"github.com/automated-pen-testing/api/internal/config"
-	"github.com/automated-pen-testing/api/internal/storage/sql"
+	"github.com/apt-tool/apt-core/cmd"
+	"github.com/apt-tool/apt-core/internal/config"
+	"github.com/apt-tool/apt-core/internal/storage/sql"
 
 	"github.com/spf13/cobra"
 )
