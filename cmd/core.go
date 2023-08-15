@@ -2,12 +2,12 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/apt-tool/apt-core/pkg/client"
 	"log"
 
 	"github.com/apt-tool/apt-core/internal/config"
 	"github.com/apt-tool/apt-core/internal/core/handler"
 	"github.com/apt-tool/apt-core/internal/core/worker"
+	"github.com/apt-tool/apt-core/pkg/client"
 	"github.com/apt-tool/apt-core/pkg/models"
 
 	"github.com/gofiber/fiber/v2"
