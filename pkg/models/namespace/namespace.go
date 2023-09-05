@@ -11,8 +11,9 @@ type (
 	// Namespace manage projects admin can create namespaces
 	Namespace struct {
 		gorm.Model
-		Name     string
-		Users    []*user.User       `gorm:"-"`
-		Projects []*project.Project `gorm:"foreignKey:namespace_id"`
+		Name      string
+		CreatedBy string
+		Users     []*user.User       `gorm:"-"`
+		Projects  []*project.Project `gorm:"foreignKey:namespace_id"`
 	}
 )
