@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/apt-tool/apt-core/internal/config/ftp"
 	"github.com/apt-tool/apt-core/internal/core/ai"
@@ -102,6 +103,8 @@ func (w worker) work() error {
 			doc := &document.Document{
 				ProjectID:   projectID,
 				Instruction: attack,
+				ExecutedBy:  project.Creator,
+				Result:      enum.ResultNotSet,
 				Status:      enum.StatusInit,
 			}
 
@@ -116,8 +119,11 @@ func (w worker) work() error {
 
 		// perform each attack
 		for _, doc := range docs {
+			start := time.Now()
+
 			// update doc status
 			doc.Status = enum.StatusPending
+			doc.Result = enum.ResultUnknown
 			_ = w.models.Documents.Update(doc)
 
 			// create ftp request
@@ -145,6 +151,7 @@ func (w worker) work() error {
 			if response, httpError := w.client.Post(address, &buffer, headers...); httpError != nil {
 				log.Println(fmt.Errorf("[worker.work] failed to execute script error=%w", httpError))
 
+				doc.Result = enum.ResultFailed
 				doc.Status = enum.StatusFailed
 			} else {
 				if response.StatusCode == 200 {
@@ -152,7 +159,11 @@ func (w worker) work() error {
 				} else {
 					doc.Status = enum.StatusFailed
 				}
+
+				doc.Result = enum.ResultSuccessful
 			}
+
+			doc.ExecutionTime = time.Now().Sub(start)
 
 			_ = w.models.Documents.Update(doc)
 		}
