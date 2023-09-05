@@ -10,7 +10,7 @@ const (
 	StatusFailed
 )
 
-func ConvertStatusToMessage(status Status) string {
+func (s Status) ConvertStatusToMessage(status Status) string {
 	switch status {
 	case StatusInit:
 		return "Initialized"

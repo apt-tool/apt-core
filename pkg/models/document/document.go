@@ -1,6 +1,8 @@
 package document
 
 import (
+	"time"
+
 	"github.com/apt-tool/apt-core/pkg/enum"
 
 	"gorm.io/gorm"
@@ -9,8 +11,11 @@ import (
 // Document represents core log files
 type Document struct {
 	gorm.Model
-	ProjectID   uint
-	LogFile     string
-	Instruction string
-	Status      enum.Status
+	ProjectID     uint
+	LogFile       string
+	Instruction   string
+	ExecutedBy    string
+	ExecutionTime time.Duration
+	Result        enum.Result
+	Status        enum.Status
 }
