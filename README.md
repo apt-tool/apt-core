@@ -1,7 +1,7 @@
 # APT Core
 
-![](https://img.shields.io/badge/Language-Golang-blue)
-![](https://img.shields.io/badge/App-Core-blue)
+![](https://img.shields.io/badge/Language-Golang-red)
+![](https://img.shields.io/badge/App-APT_CORE-green)
 ![GitHub release (with filter)](https://img.shields.io/github/v/release/apt-tool/apt-core)
 
 This is ```apt``` base api system. In this service we use ```apt scanner```, ```apt instructions```, and ```apt AI``` components
