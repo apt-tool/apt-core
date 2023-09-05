@@ -155,12 +155,12 @@ func (w worker) work() error {
 				doc.Status = enum.StatusFailed
 			} else {
 				if response.StatusCode == 200 {
-					doc.Status = enum.StatusDone
+					doc.Result = enum.ResultSuccessful
 				} else {
-					doc.Status = enum.StatusFailed
+					doc.Result = enum.ResultFailed
 				}
 
-				doc.Result = enum.ResultSuccessful
+				doc.Status = enum.StatusDone
 			}
 
 			doc.ExecutionTime = time.Now().Sub(start)
