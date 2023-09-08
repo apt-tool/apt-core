@@ -46,14 +46,19 @@ func (p *Pool) Register() {
 	aiInstance := ai.AI{}
 
 	for i := 0; i < p.capacity; i++ {
-		go worker{
-			ai:      &aiInstance,
-			cfg:     p.cfg,
-			client:  p.client,
-			models:  p.models,
-			channel: p.channel,
-			done:    p.done,
-		}.work()
+		go func() {
+			err := worker{
+				ai:      &aiInstance,
+				cfg:     p.cfg,
+				client:  p.client,
+				models:  p.models,
+				channel: p.channel,
+				done:    p.done,
+			}.work()
+			if err != nil {
+				log.Printf("[worker.Register] failed to start worker error=%v\n", err)
+			}
+		}()
 	}
 
 	go p.update()
