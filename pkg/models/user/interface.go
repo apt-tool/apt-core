@@ -11,12 +11,10 @@ import (
 // Interface manages the user database methods
 type Interface interface {
 	Create(user *User) error
-	Delete(userID uint) error
-	Update(userID uint, user *User) error
-	UpdateInfo(username string, newName string) error
-	Get() ([]*User, error)
-	GetByID(userID uint) (*User, error)
-	GetByIDs(userIDs []uint) ([]*User, error)
+	Delete(id uint) error
+	Update(id uint, user *User) error
+	GetAll() ([]*User, error)
+	GetByID(id uint) (*User, error)
 	GetByName(name string) (*User, error)
 	Validate(name, pass string) (*User, error)
 }
@@ -41,19 +39,11 @@ func (c core) Delete(userID uint) error {
 	return c.db.Delete(&User{}, "id = ?", userID).Error
 }
 
-func (c core) UpdateInfo(username string, newName string) error {
-	return c.db.
-		Model(&User{}).
-		Where("username = ?", username).
-		Update("username", newName).
-		Error
-}
-
 func (c core) Update(userID uint, user *User) error {
-	return c.db.Model(&User{}).Update("role", user.Role).Where("id = ?", userID).Error
+	return c.db.Where("id = ?", userID).Updates(user).Error
 }
 
-func (c core) Get() ([]*User, error) {
+func (c core) GetAll() ([]*User, error) {
 	list := make([]*User, 0)
 
 	if err := c.db.Find(&list).Error; err != nil {
@@ -63,28 +53,18 @@ func (c core) Get() ([]*User, error) {
 	return list, nil
 }
 
-func (c core) GetByID(userID uint) (*User, error) {
+func (c core) GetByID(id uint) (*User, error) {
 	user := new(User)
 
-	if err := c.db.Where("id = ?", userID).First(&user).Error; err != nil {
+	if err := c.db.Where("id = ?", id).First(&user).Error; err != nil {
 		return nil, fmt.Errorf("[db.User.Get] failed to get records error=%w", err)
 	}
 
-	if user.ID != userID {
+	if user.ID != id {
 		return nil, ErrUserNotFound
 	}
 
 	return user, nil
-}
-
-func (c core) GetByIDs(userIDs []uint) ([]*User, error) {
-	list := make([]*User, 0)
-
-	if err := c.db.Where("id in ?", userIDs).Find(&list).Error; err != nil {
-		return nil, fmt.Errorf("[db.User.Get] failed to get records error=%w", err)
-	}
-
-	return list, nil
 }
 
 func (c core) GetByName(name string) (*User, error) {
