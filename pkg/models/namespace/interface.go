@@ -13,6 +13,7 @@ type Interface interface {
 	Update(id uint, namespace *Namespace) error
 	GetAll() ([]*Namespace, error)
 	GetByID(id uint) (*Namespace, error)
+	GetByIDs(namespaceIDs []uint) ([]*Namespace, error)
 }
 
 func New(db *gorm.DB) Interface {
@@ -59,4 +60,14 @@ func (c core) GetByID(id uint) (*Namespace, error) {
 	}
 
 	return namespace, nil
+}
+
+func (c core) GetByIDs(namespaceIDs []uint) ([]*Namespace, error) {
+	list := make([]*Namespace, 0)
+
+	if err := c.db.Where("id in ?", namespaceIDs).Find(&list).Error; err != nil {
+		return nil, fmt.Errorf("[db.Namespace.Get] failed to get records error=%w", err)
+	}
+
+	return list, nil
 }

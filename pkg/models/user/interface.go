@@ -16,6 +16,7 @@ type Interface interface {
 	GetAll() ([]*User, error)
 	GetByID(id uint) (*User, error)
 	GetByName(name string) (*User, error)
+	GetByIDs(userIDs []uint) ([]*User, error)
 	Validate(name, pass string) (*User, error)
 }
 
@@ -79,6 +80,16 @@ func (c core) GetByName(name string) (*User, error) {
 	}
 
 	return user, nil
+}
+
+func (c core) GetByIDs(userIDs []uint) ([]*User, error) {
+	list := make([]*User, 0)
+
+	if err := c.db.Where("id in ?", userIDs).Find(&list).Error; err != nil {
+		return nil, fmt.Errorf("[db.User.Get] failed to get records error=%w", err)
+	}
+
+	return list, nil
 }
 
 func (c core) Validate(name, pass string) (*User, error) {
