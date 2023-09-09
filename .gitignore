@@ -1,5 +1,6 @@
 main
 config.yaml
+config.yml
 .idea/
 .DS_Store
 .vscode
