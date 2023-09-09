@@ -155,9 +155,19 @@ func (w worker) work() error {
 				doc.Status = enum.StatusFailed
 			} else {
 				if response.StatusCode == 200 {
-					doc.Result = enum.ResultSuccessful
-				} else {
-					doc.Result = enum.ResultFailed
+					type rsp struct {
+						Code int `json:"code"`
+					}
+
+					r := rsp{}
+
+					if err := json.NewDecoder(response.Body).Decode(&r); err == nil {
+						if r.Code != 0 {
+							doc.Result = enum.ResultFailed
+						} else {
+							doc.Result = enum.ResultSuccessful
+						}
+					}
 				}
 
 				doc.Status = enum.StatusDone
