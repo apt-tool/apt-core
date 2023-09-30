@@ -2,24 +2,19 @@ package scanner
 
 import (
 	"fmt"
-	"os"
 	"os/exec"
 )
 
-const (
-	reportsDir = "./reports/"
-)
-
 var (
-	template = "./scanner --url=%s --blockRegex true --reportFormat json --reportName %s --skipWAFIdentification true --skipWAFBlockCheck true --noEmailReport true"
+	template = "python scanner.py --host %s"
 )
 
 // Scan a host by using apt-scanner
-func Scan(host, name string) ([]string, error) {
+func Scan(host string) ([]string, error) {
 	r := new(report)
 
 	// create command
-	command := fmt.Sprintf(template, host, name)
+	command := fmt.Sprintf(template, host)
 
 	// execute command
 	cmd := exec.Command(command)
@@ -27,8 +22,8 @@ func Scan(host, name string) ([]string, error) {
 		return r.vulnerabilities, err
 	}
 
-	// read report file
-	context, err := os.ReadFile(reportsDir + name + ".json")
+	// read output
+	context, err := cmd.Output()
 	if err != nil {
 		return r.vulnerabilities, err
 	}
