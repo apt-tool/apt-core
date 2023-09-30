@@ -3,7 +3,6 @@ module github.com/apt-tool/apt-core
 go 1.20
 
 require (
-	github.com/apt-tool/apt-scanner v0.2.1
 	github.com/gofiber/fiber/v2 v2.48.0
 	github.com/knadh/koanf v1.5.0
 	github.com/spf13/cobra v1.7.0

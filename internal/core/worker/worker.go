@@ -87,7 +87,7 @@ func (w worker) work() error {
 		}
 
 		// start scanner
-		vulnerabilities, err := scanner.Scan(fmt.Sprintf("%s://%s:%d", prefix, project.Host, project.Port), project.Name)
+		vulnerabilities, err := scanner.Scan(fmt.Sprintf("%s://%s:%d", prefix, project.Host, project.Port))
 		if err != nil {
 			log.Println(fmt.Errorf("[worker.work] failed to scan host error=%w", err))
 		}
