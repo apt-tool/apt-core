@@ -9,8 +9,8 @@ import (
 // Interface manages the project db methods
 type Interface interface {
 	Create(project *Project) error
-	Delete(projectID uint) error
-	GetByID(projectID uint) (*Project, error)
+	Delete(id uint) error
+	GetByID(id uint) (*Project, error)
 	GetAll() ([]*Project, error)
 }
 
@@ -30,12 +30,12 @@ func (c core) Create(project *Project) error {
 }
 
 // Delete a existed project
-func (c core) Delete(projectID uint) error {
-	return c.db.Delete(&Project{}, "id = ?", projectID).Error
+func (c core) Delete(id uint) error {
+	return c.db.Delete(&Project{}, "id = ?", id).Error
 }
 
 // GetByID returns a single project with all its dependencies
-func (c core) GetByID(projectID uint) (*Project, error) {
+func (c core) GetByID(id uint) (*Project, error) {
 	project := new(Project)
 
 	query := c.db.
@@ -43,12 +43,12 @@ func (c core) GetByID(projectID uint) (*Project, error) {
 		Preload("Labels").
 		Preload("Endpoints").
 		Preload("Params").
-		First(&project, "id = ?", projectID)
+		First(&project, "id = ?", id)
 	if err := query.Error; err != nil {
-		return nil, fmt.Errorf("[db.Project.Get] failed to get record error=%w", err)
+		return nil, fmt.Errorf("[db.Project.GetByID] failed to get record error=%w", err)
 	}
 
-	if project.ID != projectID {
+	if project.ID != id {
 		return nil, ErrProjectNotFound
 	}
 

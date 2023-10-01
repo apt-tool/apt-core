@@ -10,7 +10,6 @@ import (
 type Interface interface {
 	Create(document *Document) error
 	Update(document *Document) error
-	Delete(projectID uint) error
 	GetByID(id uint) (*Document, error)
 }
 
@@ -30,10 +29,6 @@ func (c core) Create(document *Document) error {
 
 func (c core) Update(document *Document) error {
 	return c.db.Save(document).Error
-}
-
-func (c core) Delete(projectID uint) error {
-	return c.db.Delete(&Document{}, "project_id = ?", projectID).Error
 }
 
 func (c core) GetByID(id uint) (*Document, error) {
