@@ -6,12 +6,9 @@ import (
 
 	"github.com/ptaas-tool/base-api/internal/config/migration"
 	"github.com/ptaas-tool/base-api/internal/utils/crypto"
-	"github.com/ptaas-tool/base-api/pkg/enum"
 	"github.com/ptaas-tool/base-api/pkg/models/document"
-	"github.com/ptaas-tool/base-api/pkg/models/namespace"
 	"github.com/ptaas-tool/base-api/pkg/models/project"
 	"github.com/ptaas-tool/base-api/pkg/models/user"
-	"github.com/ptaas-tool/base-api/pkg/models/user_namespace"
 
 	"gorm.io/gorm"
 )
@@ -25,8 +22,6 @@ type Migrate struct {
 func (m Migrate) Do() {
 	models := []interface{}{
 		&document.Document{},
-		&namespace.Namespace{},
-		&user_namespace.UserNamespace{},
 		&project.ParamSet{},
 		&project.LabelSet{},
 		&project.EndpointSet{},
@@ -44,7 +39,6 @@ func (m Migrate) Do() {
 		tmp := &user.User{
 			Username: m.Cfg.Root,
 			Password: crypto.GetMD5Hash(m.Cfg.Pass),
-			Role:     enum.RoleAdmin,
 		}
 
 		if err := m.Db.Create(tmp).Error; err != nil {
