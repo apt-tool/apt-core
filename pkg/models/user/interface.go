@@ -43,7 +43,7 @@ func (c core) GetAll() ([]*User, error) {
 	list := make([]*User, 0)
 
 	if err := c.db.Find(&list).Error; err != nil {
-		return nil, fmt.Errorf("[db.User.Get] failed to get records error=%w", err)
+		return nil, fmt.Errorf("[db.User.GetAll] failed to get records error=%w", err)
 	}
 
 	return list, nil

@@ -15,7 +15,6 @@ type (
 		Creator     string
 		HTTPSecure  bool
 		Port        int
-		NamespaceID uint
 		Endpoints   []*EndpointSet       `gorm:"foreignKey:project_id"`
 		Labels      []*LabelSet          `gorm:"foreignKey:project_id"`
 		Params      []*ParamSet          `gorm:"foreignKey:project_id"`
