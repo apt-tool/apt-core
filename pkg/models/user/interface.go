@@ -3,7 +3,7 @@ package user
 import (
 	"fmt"
 
-	"github.com/apt-tool/apt-core/internal/utils/crypto"
+	"github.com/ptaas-tool/base-api/internal/utils/crypto"
 
 	"gorm.io/gorm"
 )

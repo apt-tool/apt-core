@@ -4,14 +4,14 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/apt-tool/apt-core/internal/config/migration"
-	"github.com/apt-tool/apt-core/internal/utils/crypto"
-	"github.com/apt-tool/apt-core/pkg/enum"
-	"github.com/apt-tool/apt-core/pkg/models/document"
-	"github.com/apt-tool/apt-core/pkg/models/namespace"
-	"github.com/apt-tool/apt-core/pkg/models/project"
-	"github.com/apt-tool/apt-core/pkg/models/user"
-	"github.com/apt-tool/apt-core/pkg/models/user_namespace"
+	"github.com/ptaas-tool/base-api/internal/config/migration"
+	"github.com/ptaas-tool/base-api/internal/utils/crypto"
+	"github.com/ptaas-tool/base-api/pkg/enum"
+	"github.com/ptaas-tool/base-api/pkg/models/document"
+	"github.com/ptaas-tool/base-api/pkg/models/namespace"
+	"github.com/ptaas-tool/base-api/pkg/models/project"
+	"github.com/ptaas-tool/base-api/pkg/models/user"
+	"github.com/ptaas-tool/base-api/pkg/models/user_namespace"
 
 	"gorm.io/gorm"
 )

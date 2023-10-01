@@ -7,14 +7,14 @@ import (
 	"log"
 	"time"
 
-	"github.com/apt-tool/apt-core/internal/config/ftp"
-	"github.com/apt-tool/apt-core/internal/core/ai"
-	"github.com/apt-tool/apt-core/internal/core/scanner"
-	"github.com/apt-tool/apt-core/internal/utils/crypto"
-	"github.com/apt-tool/apt-core/pkg/client"
-	"github.com/apt-tool/apt-core/pkg/enum"
-	"github.com/apt-tool/apt-core/pkg/models"
-	"github.com/apt-tool/apt-core/pkg/models/document"
+	"github.com/ptaas-tool/base-api/internal/config/ftp"
+	"github.com/ptaas-tool/base-api/internal/core/ai"
+	"github.com/ptaas-tool/base-api/internal/core/scanner"
+	"github.com/ptaas-tool/base-api/internal/utils/crypto"
+	"github.com/ptaas-tool/base-api/pkg/client"
+	"github.com/ptaas-tool/base-api/pkg/enum"
+	"github.com/ptaas-tool/base-api/pkg/models"
+	"github.com/ptaas-tool/base-api/pkg/models/document"
 )
 
 // worker is the smallest unit of our core

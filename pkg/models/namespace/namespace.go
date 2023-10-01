@@ -1,8 +1,8 @@
 package namespace
 
 import (
-	"github.com/apt-tool/apt-core/pkg/models/project"
-	"github.com/apt-tool/apt-core/pkg/models/user"
+	"github.com/ptaas-tool/base-api/pkg/models/project"
+	"github.com/ptaas-tool/base-api/pkg/models/user"
 
 	"gorm.io/gorm"
 )

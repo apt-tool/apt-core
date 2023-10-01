@@ -3,10 +3,10 @@ package worker
 import (
 	"log"
 
-	"github.com/apt-tool/apt-core/internal/config/ftp"
-	"github.com/apt-tool/apt-core/internal/core/ai"
-	"github.com/apt-tool/apt-core/pkg/client"
-	"github.com/apt-tool/apt-core/pkg/models"
+	"github.com/ptaas-tool/base-api/internal/config/ftp"
+	"github.com/ptaas-tool/base-api/internal/core/ai"
+	"github.com/ptaas-tool/base-api/pkg/client"
+	"github.com/ptaas-tool/base-api/pkg/models"
 )
 
 type Pool struct {

@@ -1,7 +1,7 @@
 package user
 
 import (
-	"github.com/apt-tool/apt-core/pkg/enum"
+	"github.com/ptaas-tool/base-api/pkg/enum"
 
 	"gorm.io/gorm"
 )

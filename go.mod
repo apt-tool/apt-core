@@ -1,4 +1,4 @@
-module github.com/apt-tool/apt-core
+module github.com/ptaas-tool/base-api
 
 go 1.20
 

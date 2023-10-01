@@ -1,7 +1,7 @@
 package project
 
 import (
-	"github.com/apt-tool/apt-core/pkg/models/document"
+	"github.com/ptaas-tool/base-api/pkg/models/document"
 
 	"gorm.io/gorm"
 )

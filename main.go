@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/apt-tool/apt-core/cmd"
-	"github.com/apt-tool/apt-core/internal/config"
-	"github.com/apt-tool/apt-core/internal/storage/sql"
+	"github.com/ptaas-tool/base-api/cmd"
+	"github.com/ptaas-tool/base-api/internal/config"
+	"github.com/ptaas-tool/base-api/internal/storage/sql"
 
 	"github.com/spf13/cobra"
 )

@@ -1,10 +1,10 @@
 package config
 
 import (
-	"github.com/apt-tool/apt-core/internal/config/core"
-	"github.com/apt-tool/apt-core/internal/config/ftp"
-	"github.com/apt-tool/apt-core/internal/config/migration"
-	"github.com/apt-tool/apt-core/internal/storage/sql"
+	"github.com/ptaas-tool/base-api/internal/config/core"
+	"github.com/ptaas-tool/base-api/internal/config/ftp"
+	"github.com/ptaas-tool/base-api/internal/config/migration"
+	"github.com/ptaas-tool/base-api/internal/storage/sql"
 )
 
 func Default() Config {

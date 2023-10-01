@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/apt-tool/apt-core/internal/config"
-	"github.com/apt-tool/apt-core/internal/core/handler"
-	"github.com/apt-tool/apt-core/internal/core/worker"
-	"github.com/apt-tool/apt-core/pkg/client"
-	"github.com/apt-tool/apt-core/pkg/models"
+	"github.com/ptaas-tool/base-api/internal/config"
+	"github.com/ptaas-tool/base-api/internal/core/handler"
+	"github.com/ptaas-tool/base-api/internal/core/worker"
+	"github.com/ptaas-tool/base-api/pkg/client"
+	"github.com/ptaas-tool/base-api/pkg/models"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/spf13/cobra"
