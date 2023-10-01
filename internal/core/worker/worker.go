@@ -64,7 +64,7 @@ func (w worker) rerun(id int) {
 	}
 
 	// get project from db
-	project, er := w.models.Projects.GetByID(oldDoc.ProjectID)
+	projectInstance, er := w.models.Projects.GetByID(oldDoc.ProjectID)
 	if er != nil {
 		log.Println(fmt.Errorf("[worker.rerun] failed to get project error=%w", er))
 
@@ -96,62 +96,7 @@ func (w worker) rerun(id int) {
 	doc.Result = enum.ResultUnknown
 	_ = w.models.Documents.Update(doc)
 
-	start := time.Now()
-
-	// create ftp request
-	tmp := executeRequest{
-		Param:      project.Host,
-		Path:       doc.Instruction,
-		DocumentID: doc.ID,
-	}
-
-	// send ftp request
-	var buffer bytes.Buffer
-	if e := json.NewEncoder(&buffer).Encode(tmp); e != nil {
-		log.Println(fmt.Errorf("[worker.rerun] failed to create request error=%w", e))
-
-		w.exit(id)
-
-		return
-	}
-
-	address := fmt.Sprintf("%s/execute", w.cfg.Host)
-	headers := []string{
-		"Content-Type:application/json",
-		fmt.Sprintf("x-token:%s", crypto.GetMD5Hash(w.cfg.Secret)),
-	}
-
-	// update document based of response
-	if response, httpError := w.client.Post(address, &buffer, headers...); httpError != nil {
-		log.Println(fmt.Errorf("[worker.rerun] failed to execute script error=%w", httpError))
-
-		doc.Result = enum.ResultFailed
-		doc.Status = enum.StatusFailed
-	} else {
-		if response.StatusCode == 200 {
-			type rsp struct {
-				Code int `json:"code"`
-			}
-
-			r := rsp{}
-
-			if err := json.NewDecoder(response.Body).Decode(&r); err == nil {
-				if r.Code != 0 {
-					doc.Result = enum.ResultFailed
-				} else {
-					doc.Result = enum.ResultSuccessful
-				}
-			}
-		}
-
-		doc.Status = enum.StatusDone
-	}
-
-	doc.ExecutionTime = time.Now().Sub(start)
-
-	_ = w.models.Documents.Update(doc)
-
-	w.exit(id)
+	_ = w.executeDoc(projectInstance, doc)
 }
 
 func (w worker) execute(id int) {
