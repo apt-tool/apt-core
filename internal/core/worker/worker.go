@@ -20,6 +20,7 @@ import (
 // worker is the smallest unit of our core
 type worker struct {
 	channel chan int
+	rerun   chan int
 	done    chan int
 	cfg     ftp.Config
 	client  client.HTTPClient
@@ -63,13 +64,6 @@ func (w worker) work() error {
 			w.exit(id)
 
 			continue
-		}
-
-		// remove all used documents
-		if er := w.models.Documents.Delete(projectID); er != nil {
-			log.Println(fmt.Errorf("[worker.work] failed to remove documents error=%w", er))
-
-			w.exit(id)
 		}
 
 		// get project from db

@@ -27,7 +27,18 @@ func (h Handler) secure(ctx *fiber.Ctx) error {
 func (h Handler) process(ctx *fiber.Ctx) error {
 	id, _ := ctx.ParamsInt("project_id", 0)
 
-	if !h.WorkerPool.Do(id) {
+	if !h.WorkerPool.Do(id, false) {
+		return ctx.SendStatus(fiber.StatusServiceUnavailable)
+	}
+
+	return ctx.SendStatus(fiber.StatusOK)
+}
+
+// rerun will perform operation of single document
+func (h Handler) rerun(ctx *fiber.Ctx) error {
+	id, _ := ctx.ParamsInt("document_id", 0)
+
+	if !h.WorkerPool.Do(id, true) {
 		return ctx.SendStatus(fiber.StatusServiceUnavailable)
 	}
 
@@ -37,6 +48,7 @@ func (h Handler) process(ctx *fiber.Ctx) error {
 // Register core apis
 func (h Handler) Register(app *fiber.App) {
 	app.Get("/api/:project_id", h.process)
+	app.Get("/api/rerun/:document_id")
 	app.Get("/health", func(ctx *fiber.Ctx) error {
 		return ctx.SendStatus(fiber.StatusOK)
 	})

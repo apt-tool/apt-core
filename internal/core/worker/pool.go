@@ -17,6 +17,7 @@ type Pool struct {
 	capacity int
 	inuse    int
 	channel  chan int
+	reruns   chan int
 	done     chan int
 }
 
@@ -28,6 +29,7 @@ func New(cfg ftp.Config, client client.HTTPClient, models *models.Interface, cap
 		capacity: capacity,
 		inuse:    0,
 		channel:  make(chan int),
+		reruns:   make(chan int),
 		done:     make(chan int),
 	}
 }
@@ -53,6 +55,7 @@ func (p *Pool) Register() {
 				client:  p.client,
 				models:  p.models,
 				channel: p.channel,
+				rerun:   p.reruns,
 				done:    p.done,
 			}.work()
 			if err != nil {
@@ -66,14 +69,18 @@ func (p *Pool) Register() {
 	log.Printf("[worker.Register] started %d workers\n", p.capacity)
 }
 
-func (p *Pool) Do(id int) bool {
+func (p *Pool) Do(id int, rerun bool) bool {
 	if p.inuse == p.capacity {
 		return false
 	}
 
 	p.inuse++
 
-	p.channel <- id
+	if rerun {
+		p.reruns <- id
+	} else {
+		p.channel <- id
+	}
 
 	log.Printf("[worker.Do] start process for id=%d\n", id)
 
