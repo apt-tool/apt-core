@@ -1,10 +1,10 @@
-# APT Core
+# PTaaS Core
 
 ![](https://img.shields.io/badge/language-golang_v1.20-lightblue)
 ![](https://img.shields.io/badge/app-apt_core-green)
 ![GitHub release (with filter)](https://img.shields.io/github/v/release/apt-tool/apt-core)
 
-This is ```apt``` base api system. In this service we use ```apt scanner```, ```apt instructions```, and ```apt AI``` components
+This is ```PTaaS``` base api system. In this service we use ```scanner```, ```ftp server```, and ```ml``` components
 to perform our penetration testing stages. In ```pkg/models``` directory we defined our
 base database modules and system modules to be used in all other
 system components.
