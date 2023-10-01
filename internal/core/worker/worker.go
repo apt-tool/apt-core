@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/ptaas-tool/base-api/pkg/models/project"
 	"log"
 	"time"
 
@@ -178,7 +179,7 @@ func (w worker) execute(id int) {
 	}
 
 	// get project from db
-	project, er := w.models.Projects.GetByID(projectID)
+	projectInstance, er := w.models.Projects.GetByID(projectID)
 	if er != nil {
 		log.Println(fmt.Errorf("[worker.execute] failed to get project error=%w", er))
 
@@ -189,12 +190,12 @@ func (w worker) execute(id int) {
 
 	// set http or https
 	prefix := "http"
-	if project.HTTPSecure {
+	if projectInstance.HTTPSecure {
 		prefix = "http"
 	}
 
 	// start scanner
-	vulnerabilities, err := scanner.Scan(fmt.Sprintf("%s://%s:%d", prefix, project.Host, project.Port))
+	vulnerabilities, err := scanner.Scan(fmt.Sprintf("%s://%s:%d", prefix, projectInstance.Host, projectInstance.Port))
 	if err != nil {
 		log.Println(fmt.Errorf("[worker.execute] failed to scan host error=%w", err))
 	}
@@ -210,7 +211,7 @@ func (w worker) execute(id int) {
 		doc := &document.Document{
 			ProjectID:   projectID,
 			Instruction: attack,
-			ExecutedBy:  project.Creator,
+			ExecutedBy:  projectInstance.Creator,
 			Result:      enum.ResultNotSet,
 			Status:      enum.StatusInit,
 		}
@@ -226,66 +227,72 @@ func (w worker) execute(id int) {
 
 	// perform each attack
 	for _, doc := range docs {
-		start := time.Now()
-
-		// update doc status
-		doc.Status = enum.StatusPending
-		doc.Result = enum.ResultUnknown
-		_ = w.models.Documents.Update(doc)
-
-		// create ftp request
-		tmp := executeRequest{
-			Param:      project.Host,
-			Path:       doc.Instruction,
-			DocumentID: doc.ID,
+		if err := w.executeDoc(projectInstance, doc); err != nil {
+			log.Println(fmt.Errorf("[worker.execute] failed to create request error=%w", err))
 		}
-
-		// send ftp request
-		var buffer bytes.Buffer
-		if e := json.NewEncoder(&buffer).Encode(tmp); e != nil {
-			log.Println(fmt.Errorf("[worker.execute] failed to create request error=%w", e))
-
-			continue
-		}
-
-		address := fmt.Sprintf("%s/execute", w.cfg.Host)
-		headers := []string{
-			"Content-Type:application/json",
-			fmt.Sprintf("x-token:%s", crypto.GetMD5Hash(w.cfg.Secret)),
-		}
-
-		// update document based of response
-		if response, httpError := w.client.Post(address, &buffer, headers...); httpError != nil {
-			log.Println(fmt.Errorf("[worker.execute] failed to execute script error=%w", httpError))
-
-			doc.Result = enum.ResultFailed
-			doc.Status = enum.StatusFailed
-		} else {
-			if response.StatusCode == 200 {
-				type rsp struct {
-					Code int `json:"code"`
-				}
-
-				r := rsp{}
-
-				if err := json.NewDecoder(response.Body).Decode(&r); err == nil {
-					if r.Code != 0 {
-						doc.Result = enum.ResultFailed
-					} else {
-						doc.Result = enum.ResultSuccessful
-					}
-				}
-			}
-
-			doc.Status = enum.StatusDone
-		}
-
-		doc.ExecutionTime = time.Now().Sub(start)
-
-		_ = w.models.Documents.Update(doc)
 	}
 
 	w.exit(id)
+}
+
+func (w worker) executeDoc(project *project.Project, doc *document.Document) error {
+	start := time.Now()
+
+	// update doc status
+	doc.Status = enum.StatusPending
+	doc.Result = enum.ResultUnknown
+	_ = w.models.Documents.Update(doc)
+
+	// create ftp request
+	tmp := executeRequest{
+		Param:      project.Host,
+		Path:       doc.Instruction,
+		DocumentID: doc.ID,
+	}
+
+	// send ftp request
+	var buffer bytes.Buffer
+	if e := json.NewEncoder(&buffer).Encode(tmp); e != nil {
+		return e
+	}
+
+	address := fmt.Sprintf("%s/execute", w.cfg.Host)
+	headers := []string{
+		"Content-Type:application/json",
+		fmt.Sprintf("x-token:%s", crypto.GetMD5Hash(w.cfg.Secret)),
+	}
+
+	// update document based of response
+	if response, httpError := w.client.Post(address, &buffer, headers...); httpError != nil {
+		log.Println(fmt.Errorf("[worker.executeDoc] failed to execute script error=%w", httpError))
+
+		doc.Result = enum.ResultFailed
+		doc.Status = enum.StatusFailed
+	} else {
+		if response.StatusCode == 200 {
+			type rsp struct {
+				Code int `json:"code"`
+			}
+
+			r := rsp{}
+
+			if err := json.NewDecoder(response.Body).Decode(&r); err == nil {
+				if r.Code != 0 {
+					doc.Result = enum.ResultFailed
+				} else {
+					doc.Result = enum.ResultSuccessful
+				}
+			}
+		}
+
+		doc.Status = enum.StatusDone
+	}
+
+	doc.ExecutionTime = time.Now().Sub(start)
+
+	_ = w.models.Documents.Update(doc)
+
+	return nil
 }
 
 func (w worker) exit(id int) {

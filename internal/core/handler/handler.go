@@ -47,8 +47,8 @@ func (h Handler) rerun(ctx *fiber.Ctx) error {
 
 // Register core apis
 func (h Handler) Register(app *fiber.App) {
-	app.Get("/api/:project_id", h.process)
-	app.Get("/api/rerun/:document_id", h.rerun)
+	app.Get("/api/:project_id", h.secure, h.process)
+	app.Get("/api/rerun/:document_id", h.secure, h.rerun)
 	app.Get("/health", func(ctx *fiber.Ctx) error {
 		return ctx.SendStatus(fiber.StatusOK)
 	})
