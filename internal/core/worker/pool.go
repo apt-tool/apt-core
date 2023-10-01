@@ -55,7 +55,7 @@ func (p *Pool) Register() {
 				client:  p.client,
 				models:  p.models,
 				channel: p.channel,
-				rerun:   p.reruns,
+				reruns:  p.reruns,
 				done:    p.done,
 			}.work()
 			if err != nil {
