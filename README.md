@@ -1,8 +1,7 @@
 # PTaaS Core
 
 ![](https://img.shields.io/badge/language-golang_v1.20-lightblue)
-![](https://img.shields.io/badge/app-apt_core-green)
-![GitHub release (with filter)](https://img.shields.io/github/v/release/apt-tool/apt-core)
+![GitHub release (with filter)](https://img.shields.io/github/v/release/ptaas-tool/base-api)
 
 This is ```PTaaS``` base api system. In this service we use ```scanner```, ```ftp server```, and ```ml``` components
 to perform our penetration testing stages. In ```pkg/models``` directory we defined our
@@ -14,7 +13,7 @@ system components.
 Core api docker image address:
 
 ```shell
-docker pull amirhossein21/apt-core:v0.2.4
+docker pull amirhossein21/ptaas-tool:base-v0.2.4
 ```
 
 ### config
@@ -52,5 +51,5 @@ Setup core api in docker container with following command:
 docker run -d \
   -v type=bind,source=$(pwd)/config.yml,dest=/app/config.yml
   -p 80:80 \
-  amirhossein21/apt-core:v0.2.4
+  amirhossein21/ptaas-tool:base-v0.2.4
 ```
