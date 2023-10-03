@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/ptaas-tool/base-api/pkg/models/project"
 	"log"
 	"time"
 
@@ -16,6 +15,7 @@ import (
 	"github.com/ptaas-tool/base-api/pkg/enum"
 	"github.com/ptaas-tool/base-api/pkg/models"
 	"github.com/ptaas-tool/base-api/pkg/models/document"
+	"github.com/ptaas-tool/base-api/pkg/models/project"
 )
 
 // worker is the smallest unit of our core
@@ -50,6 +50,7 @@ func (w worker) work() error {
 	}
 }
 
+// rerun method will rerun a specific document
 func (w worker) rerun(id int) {
 	documentID := uint(id)
 
@@ -96,9 +97,15 @@ func (w worker) rerun(id int) {
 	doc.Result = enum.ResultUnknown
 	_ = w.models.Documents.Update(doc)
 
-	_ = w.executeDoc(projectInstance, doc)
+	// execute the doc
+	if err := w.executeDoc(projectInstance, doc); err != nil {
+		log.Println(fmt.Errorf("[worker.rerun] failed to create request error=%w", err))
+	}
+
+	w.exit(id)
 }
 
+// execute a project
 func (w worker) execute(id int) {
 	projectID := uint(id)
 
@@ -180,6 +187,7 @@ func (w worker) execute(id int) {
 	w.exit(id)
 }
 
+// executeDoc will make a call to ftp server to run a script
 func (w worker) executeDoc(project *project.Project, doc *document.Document) error {
 	start := time.Now()
 
@@ -240,6 +248,7 @@ func (w worker) executeDoc(project *project.Project, doc *document.Document) err
 	return nil
 }
 
+// exit the current task
 func (w worker) exit(id int) {
 	w.done <- id
 }
