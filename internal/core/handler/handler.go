@@ -16,7 +16,7 @@ type Handler struct {
 func (h Handler) secure(ctx *fiber.Ctx) error {
 	cypher := ctx.Get("x-secure", "")
 
-	if crypto.GetMD5Hash(cypher) != h.Secret {
+	if cypher != crypto.GetMD5Hash(h.Secret) {
 		return ctx.Status(fiber.StatusForbidden).SendString("cannot access core")
 	}
 
