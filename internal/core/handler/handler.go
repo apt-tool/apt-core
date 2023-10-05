@@ -5,6 +5,7 @@ import (
 	"github.com/ptaas-tool/base-api/internal/utils/crypto"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 )
 
 type Handler struct {
@@ -47,6 +48,9 @@ func (h Handler) rerun(ctx *fiber.Ctx) error {
 
 // Register core apis
 func (h Handler) Register(app *fiber.App) {
+	app.Use(logger.New(logger.Config{
+		Format: "[${ip}]:${port} ${status} - ${method} ${path}\n",
+	}))
 	app.Get("/api/:project_id", h.secure, h.process)
 	app.Get("/api/rerun/:document_id", h.secure, h.rerun)
 	app.Get("/health", func(ctx *fiber.Ctx) error {
