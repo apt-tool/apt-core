@@ -14,6 +14,7 @@ type Pool struct {
 	client client.HTTPClient
 	models *models.Interface
 
+	template string
 	capacity int
 	inuse    int
 	channel  chan int
@@ -21,12 +22,13 @@ type Pool struct {
 	done     chan int
 }
 
-func New(cfg ftp.Config, client client.HTTPClient, models *models.Interface, capacity int) *Pool {
+func New(cfg ftp.Config, client client.HTTPClient, models *models.Interface, capacity int, template string) *Pool {
 	return &Pool{
 		cfg:      cfg,
 		client:   client,
 		models:   models,
 		capacity: capacity,
+		template: template,
 		inuse:    0,
 		channel:  make(chan int),
 		reruns:   make(chan int),
@@ -50,13 +52,14 @@ func (p *Pool) Register() {
 	for i := 0; i < p.capacity; i++ {
 		go func() {
 			err := worker{
-				ai:      &aiInstance,
-				cfg:     p.cfg,
-				client:  p.client,
-				models:  p.models,
-				channel: p.channel,
-				reruns:  p.reruns,
-				done:    p.done,
+				ai:       &aiInstance,
+				cfg:      p.cfg,
+				client:   p.client,
+				models:   p.models,
+				channel:  p.channel,
+				reruns:   p.reruns,
+				done:     p.done,
+				template: p.template,
 			}.work()
 			if err != nil {
 				log.Printf("[worker.Register] failed to start worker error=%v\n", err)
