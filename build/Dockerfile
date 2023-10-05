@@ -42,4 +42,4 @@ RUN pip install -r requirements.txt
 COPY --from=builder main .
 
 # run app executeable file
-CMD ["./main"]
+CMD ["./main", "core"]
