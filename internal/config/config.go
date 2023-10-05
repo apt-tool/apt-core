@@ -7,6 +7,7 @@ import (
 	"github.com/ptaas-tool/base-api/internal/config/core"
 	"github.com/ptaas-tool/base-api/internal/config/ftp"
 	"github.com/ptaas-tool/base-api/internal/config/migration"
+	"github.com/ptaas-tool/base-api/internal/config/scanner"
 	"github.com/ptaas-tool/base-api/internal/storage/sql"
 
 	"github.com/knadh/koanf"
@@ -20,6 +21,7 @@ type Config struct {
 	Core    core.Config      `koanf:"core"`
 	MySQL   sql.Config       `koanf:"mysql"`
 	Migrate migration.Config `koanf:"migrate"`
+	Scanner scanner.Config   `koanf:"scanner"`
 	FTP     ftp.Config       `koanf:"ftp"`
 }
 
