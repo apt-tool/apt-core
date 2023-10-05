@@ -4,6 +4,7 @@ import (
 	"github.com/ptaas-tool/base-api/internal/config/core"
 	"github.com/ptaas-tool/base-api/internal/config/ftp"
 	"github.com/ptaas-tool/base-api/internal/config/migration"
+	"github.com/ptaas-tool/base-api/internal/config/scanner"
 	"github.com/ptaas-tool/base-api/internal/storage/sql"
 )
 
@@ -13,6 +14,9 @@ func Default() Config {
 			Preemptive: false,
 			Port:       8080,
 			Enable:     false,
+		},
+		Scanner: scanner.Config{
+			Command: "python scanner.py --host %s",
 		},
 		MySQL: sql.Config{
 			Host:     "127.0.0.1",

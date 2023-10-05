@@ -20,13 +20,14 @@ import (
 
 // worker is the smallest unit of our core
 type worker struct {
-	channel chan int
-	reruns  chan int
-	done    chan int
-	cfg     ftp.Config
-	client  client.HTTPClient
-	models  *models.Interface
-	ai      *ai.AI
+	channel  chan int
+	reruns   chan int
+	done     chan int
+	template string
+	cfg      ftp.Config
+	client   client.HTTPClient
+	models   *models.Interface
+	ai       *ai.AI
 }
 
 type (
@@ -146,8 +147,11 @@ func (w worker) execute(id int) {
 		prefix = "http"
 	}
 
+	host := fmt.Sprintf("%s://%s:%d", prefix, projectInstance.Host, projectInstance.Port)
+	command := fmt.Sprintf(w.template, host)
+
 	// start scanner
-	vulnerabilities, err := scanner.Scan(fmt.Sprintf("%s://%s:%d", prefix, projectInstance.Host, projectInstance.Port))
+	vulnerabilities, err := scanner.Scan(command)
 	if err != nil {
 		log.Println(fmt.Errorf("[worker.execute] failed to scan host error=%w", err))
 	}

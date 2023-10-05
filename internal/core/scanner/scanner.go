@@ -1,20 +1,10 @@
 package scanner
 
-import (
-	"fmt"
-	"os/exec"
-)
-
-var (
-	template = "python scanner.py --host %s"
-)
+import "os/exec"
 
 // Scan a host by using apt-scanner
-func Scan(host string) ([]string, error) {
+func Scan(command string) ([]string, error) {
 	r := new(report)
-
-	// create command
-	command := fmt.Sprintf(template, host)
 
 	// execute command
 	cmd := exec.Command(command)
