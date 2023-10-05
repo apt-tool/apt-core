@@ -26,6 +26,9 @@ FROM python:3.10-slim-buster
 # app directory
 WORKDIR /app
 
+# Installing Git for alpine
+RUN apk add --no-cache git
+
 # clone into scanner
 RUN git clone https://github.com/ptaas-tool/scanner.git
 
