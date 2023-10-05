@@ -3,7 +3,7 @@ name: release
 on:
   push:
     tags:
-      - 'v5.*.*'
+      - 'v*.*.*'
       
 env:
   DOCKER_USER: ${{ secrets.DOCKER_USER }}
