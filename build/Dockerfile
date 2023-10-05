@@ -23,6 +23,9 @@ RUN CGO_ENABLED=0 GO111MODULE=on go build -v -o /main -installsuffix cgo -ldflag
 # second stage
 FROM python:3.10-alpine
 
+# install git
+RUN apk add --no-cache git
+
 # app directory
 WORKDIR /app
 
