@@ -21,13 +21,10 @@ COPY . .
 RUN CGO_ENABLED=0 GO111MODULE=on go build -v -o /main -installsuffix cgo -ldflags="-w -s" main.go
 
 # second stage
-FROM python:3.10-slim-buster
+FROM python:3.10-slim-git
 
 # app directory
 WORKDIR /app
-
-# Installing Git for alpine
-RUN apk add --no-cache git
 
 # clone into scanner
 RUN git clone https://github.com/ptaas-tool/scanner.git
