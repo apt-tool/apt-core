@@ -27,19 +27,16 @@ FROM python:3.10-slim-buster
 WORKDIR /app
 
 # clone into scanner
-RUN git clone https://github.com/apt-tool/apt-scanner.git
+RUN git clone https://github.com/ptaas-tool/scanner.git
 
 # update work directory
-WORKDIR /app/apt-scanner
+WORKDIR /app/scanner
 
 # install deps
 RUN pip install -r requirements.txt
 
 # copy executable file
 COPY --from=builder main .
-
-# allow main to be executed
-RUN chmod +x /main
 
 # run app executeable file
 CMD ["./main"]
