@@ -21,7 +21,7 @@ COPY . .
 RUN CGO_ENABLED=0 GO111MODULE=on go build -v -o /main -installsuffix cgo -ldflags="-w -s" main.go
 
 # second stage
-FROM python:3.10-slim-git
+FROM python:3.10-alpine
 
 # app directory
 WORKDIR /app
