@@ -9,6 +9,12 @@ func (a AI) GetAttacks(list, vulnerabilities []string) []string {
 
 	// logic goes here (now it's random)
 	for _, item := range list {
+		if item == "injection" || item == "payload" {
+			records = append(records, item)
+
+			continue
+		}
+
 		if rand.Intn(10) > 2 {
 			records = append(records, item)
 		}
