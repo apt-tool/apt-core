@@ -15,7 +15,7 @@ func (a AI) GetAttacks(list, vulnerabilities []string) []string {
 			continue
 		}
 
-		if rand.Intn(10) > 2 {
+		if rand.Intn(10) > 8 {
 			records = append(records, item)
 		}
 	}
