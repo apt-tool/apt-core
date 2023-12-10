@@ -13,7 +13,7 @@ import (
 
 func main() {
 	// load configs
-	cfg := config.Load("config.yaml")
+	cfg := config.Load("config.yml")
 
 	// database connection
 	db, err := sql.NewConnection(cfg.MySQL)
