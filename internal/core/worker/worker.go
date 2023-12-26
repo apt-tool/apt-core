@@ -112,7 +112,7 @@ func (w worker) rerun(id int) {
 		ProjectID:   projectInstance.ID,
 		DocumentID:  doc.ID,
 		Service:     "base-api/worker",
-		Description: "Ready to rerun the request",
+		Description: fmt.Sprintf("Running the document on `%s` attack.", doc.Instruction),
 		Type:        enum.TrackInProgress,
 	})
 
@@ -247,7 +247,7 @@ func (w worker) execute(id int) {
 			ProjectID:   projectInstance.ID,
 			DocumentID:  doc.ID,
 			Service:     "base-api/worker",
-			Description: "Running the document",
+			Description: fmt.Sprintf("Running the document on `%s` attack.", doc.Instruction),
 			Type:        enum.TrackInProgress,
 		})
 
