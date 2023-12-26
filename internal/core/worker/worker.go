@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"strings"
 	"time"
 
 	"github.com/ptaas-tool/base-api/internal/config/ftp"
@@ -16,6 +17,7 @@ import (
 	"github.com/ptaas-tool/base-api/pkg/models"
 	"github.com/ptaas-tool/base-api/pkg/models/document"
 	"github.com/ptaas-tool/base-api/pkg/models/project"
+	"github.com/ptaas-tool/base-api/pkg/models/track"
 )
 
 // worker is the smallest unit of our core
@@ -60,7 +62,7 @@ func (w worker) rerun(id int) {
 	if err != nil {
 		log.Println(fmt.Errorf("[worker.rerun] failed to get document error=%w", err))
 
-		w.exit(id)
+		w.exit(0)
 
 		return
 	}
@@ -70,10 +72,18 @@ func (w worker) rerun(id int) {
 	if er != nil {
 		log.Println(fmt.Errorf("[worker.rerun] failed to get project error=%w", er))
 
-		w.exit(id)
+		w.exit(0)
 
 		return
 	}
+
+	_ = w.models.Tracks.Create(&track.Track{
+		ProjectID:   projectInstance.ID,
+		DocumentID:  documentID,
+		Service:     "base-api/worker",
+		Description: "Got rerun request",
+		Type:        enum.TrackInProgress,
+	})
 
 	// create new document
 	doc := &document.Document{
@@ -88,7 +98,7 @@ func (w worker) rerun(id int) {
 	if e := w.models.Documents.Create(doc); e != nil {
 		log.Println(fmt.Errorf("[worker.rerun] failed to create document error=%w", e))
 
-		w.exit(id)
+		w.exit(int(projectInstance.ID))
 
 		return
 	}
@@ -98,17 +108,32 @@ func (w worker) rerun(id int) {
 	doc.Result = enum.ResultUnknown
 	_ = w.models.Documents.Update(doc)
 
+	_ = w.models.Tracks.Create(&track.Track{
+		ProjectID:   projectInstance.ID,
+		DocumentID:  doc.ID,
+		Service:     "base-api/worker",
+		Description: "Ready to rerun the request",
+		Type:        enum.TrackInProgress,
+	})
+
 	// execute the doc
 	if err := w.executeDoc(projectInstance, doc); err != nil {
 		log.Println(fmt.Errorf("[worker.rerun] failed to create request error=%w", err))
 	}
 
-	w.exit(id)
+	w.exit(int(projectInstance.ID))
 }
 
 // execute a project
 func (w worker) execute(id int) {
 	projectID := uint(id)
+
+	_ = w.models.Tracks.Create(&track.Track{
+		ProjectID:   projectID,
+		Service:     "base-api/worker",
+		Description: "Got execute request",
+		Type:        enum.TrackInProgress,
+	})
 
 	// manifests
 	manifests := make([]string, 0)
@@ -131,6 +156,13 @@ func (w worker) execute(id int) {
 		return
 	}
 
+	_ = w.models.Tracks.Create(&track.Track{
+		ProjectID:   projectID,
+		Service:     "base-api/worker",
+		Description: fmt.Sprintf("Got attacks list from ftp-server: (%s)", strings.Join(manifests, ",")),
+		Type:        enum.TrackSuccess,
+	})
+
 	// get project from db
 	projectInstance, er := w.models.Projects.GetByID(projectID)
 	if er != nil {
@@ -150,14 +182,42 @@ func (w worker) execute(id int) {
 	host := fmt.Sprintf("%s://%s:%d", prefix, projectInstance.Host, projectInstance.Port)
 	command := fmt.Sprintf(w.template, host)
 
+	_ = w.models.Tracks.Create(&track.Track{
+		ProjectID:   projectID,
+		Service:     "base-api/worker",
+		Description: "Running scanner",
+		Type:        enum.TrackInProgress,
+	})
+
 	// start scanner
 	vulnerabilities, err := scanner.Scan(command)
 	if err != nil {
 		log.Println(fmt.Errorf("[worker.execute] failed to scan host error=%w", err))
 	}
 
+	_ = w.models.Tracks.Create(&track.Track{
+		ProjectID:   projectID,
+		Service:     "base-api/worker",
+		Description: fmt.Sprintf("Vulnerabilities: (%s)", strings.Join(vulnerabilities, ",")),
+		Type:        enum.TrackSuccess,
+	})
+
+	_ = w.models.Tracks.Create(&track.Track{
+		ProjectID:   projectID,
+		Service:     "base-api/worker",
+		Description: "Running AI",
+		Type:        enum.TrackInProgress,
+	})
+
 	// get attacks from ai module
 	attacks := w.ai.GetAttacks(manifests, vulnerabilities)
+
+	_ = w.models.Tracks.Create(&track.Track{
+		ProjectID:   projectID,
+		Service:     "base-api/worker",
+		Description: fmt.Sprintf("Attacks: (%s)", strings.Join(attacks, ",")),
+		Type:        enum.TrackSuccess,
+	})
 
 	docs := make([]*document.Document, 0)
 
@@ -183,6 +243,14 @@ func (w worker) execute(id int) {
 
 	// perform each attack
 	for _, doc := range docs {
+		_ = w.models.Tracks.Create(&track.Track{
+			ProjectID:   projectInstance.ID,
+			DocumentID:  doc.ID,
+			Service:     "base-api/worker",
+			Description: "Running the document",
+			Type:        enum.TrackInProgress,
+		})
+
 		if err := w.executeDoc(projectInstance, doc); err != nil {
 			log.Println(fmt.Errorf("[worker.execute] failed to create request error=%w", err))
 		}
@@ -254,5 +322,12 @@ func (w worker) executeDoc(project *project.Project, doc *document.Document) err
 
 // exit the current task
 func (w worker) exit(id int) {
+	_ = w.models.Tracks.Create(&track.Track{
+		ProjectID:   uint(id),
+		Service:     "base-api/worker",
+		Description: "Worker exit",
+		Type:        enum.TrackWarning,
+	})
+
 	w.done <- id
 }
