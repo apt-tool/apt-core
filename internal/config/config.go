@@ -8,6 +8,7 @@ import (
 	"github.com/ptaas-tool/base-api/internal/config/ftp"
 	"github.com/ptaas-tool/base-api/internal/config/migration"
 	"github.com/ptaas-tool/base-api/internal/config/scanner"
+	"github.com/ptaas-tool/base-api/internal/core/ai"
 	"github.com/ptaas-tool/base-api/internal/storage/sql"
 
 	"github.com/knadh/koanf"
@@ -23,6 +24,7 @@ type Config struct {
 	Migrate migration.Config `koanf:"migrate"`
 	Scanner scanner.Config   `koanf:"scanner"`
 	FTP     ftp.Config       `koanf:"ftp"`
+	AI      ai.Config        `koanf:"ai"`
 }
 
 func Load(path string) Config {

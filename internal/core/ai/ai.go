@@ -2,21 +2,27 @@ package ai
 
 import "math/rand"
 
-type AI struct{}
+type AI struct {
+	Cfg Config
+}
 
 func (a AI) GetAttacks(list, vulnerabilities []string) []string {
 	records := make([]string, 0)
 
-	// logic goes here (now it's random)
-	for _, item := range list {
-		if item == "injection" || item == "payload" {
-			records = append(records, item)
+	if !a.Cfg.Enable {
+		return list
+	}
 
-			continue
-		}
-
-		if rand.Intn(10) > 8 {
-			records = append(records, item)
+	switch a.Cfg.Method {
+	case "svm":
+		break
+	case "nbias":
+		break
+	default:
+		for _, item := range list {
+			if rand.Intn(a.Cfg.Limit) > a.Cfg.Factor {
+				records = append(records, item)
+			}
 		}
 	}
 

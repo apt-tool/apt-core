@@ -5,6 +5,7 @@ import (
 	"github.com/ptaas-tool/base-api/internal/config/ftp"
 	"github.com/ptaas-tool/base-api/internal/config/migration"
 	"github.com/ptaas-tool/base-api/internal/config/scanner"
+	"github.com/ptaas-tool/base-api/internal/core/ai"
 	"github.com/ptaas-tool/base-api/internal/storage/sql"
 )
 
@@ -33,6 +34,12 @@ func Default() Config {
 			Host:   "",
 			Secret: "",
 			Access: "",
+		},
+		AI: ai.Config{
+			Enable: true,
+			Method: "random",
+			Limit:  10,
+			Factor: 7,
 		},
 	}
 }
