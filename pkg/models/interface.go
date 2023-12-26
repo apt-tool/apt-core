@@ -3,6 +3,7 @@ package models
 import (
 	"github.com/ptaas-tool/base-api/pkg/models/document"
 	"github.com/ptaas-tool/base-api/pkg/models/project"
+	"github.com/ptaas-tool/base-api/pkg/models/track"
 	"github.com/ptaas-tool/base-api/pkg/models/user"
 
 	"gorm.io/gorm"
@@ -13,6 +14,7 @@ type Interface struct {
 	Documents document.Interface
 	Projects  project.Interface
 	Users     user.Interface
+	Tracks    track.Interface
 }
 
 func New(db *gorm.DB) *Interface {
@@ -20,5 +22,6 @@ func New(db *gorm.DB) *Interface {
 		Documents: document.New(db),
 		Projects:  project.New(db),
 		Users:     user.New(db),
+		Tracks:    track.New(db),
 	}
 }
