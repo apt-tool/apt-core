@@ -39,7 +39,7 @@ func (c Core) main() {
 	modelsInstance := models.New(c.Db)
 
 	// create pool instance
-	pool := worker.New(c.Cfg.FTP, client.NewClient(), modelsInstance, c.Cfg.Core.Workers, c.Cfg.Scanner.Command)
+	pool := worker.New(c.Cfg, client.NewClient(), modelsInstance, c.Cfg.Core.Workers, c.Cfg.Scanner.Command)
 	pool.Register()
 
 	// register core handler
