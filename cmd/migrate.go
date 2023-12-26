@@ -8,6 +8,7 @@ import (
 	"github.com/ptaas-tool/base-api/internal/utils/crypto"
 	"github.com/ptaas-tool/base-api/pkg/models/document"
 	"github.com/ptaas-tool/base-api/pkg/models/project"
+	"github.com/ptaas-tool/base-api/pkg/models/track"
 	"github.com/ptaas-tool/base-api/pkg/models/user"
 
 	"gorm.io/gorm"
@@ -27,6 +28,7 @@ func (m Migrate) Do() {
 		&project.EndpointSet{},
 		&project.Project{},
 		&user.User{},
+		&track.Track{},
 	}
 
 	for _, item := range models {
