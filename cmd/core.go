@@ -46,6 +46,7 @@ func (c Core) main() {
 	h := handler.Handler{
 		Secret:     c.Cfg.Core.Secret,
 		WorkerPool: pool,
+		DB:         modelsInstance,
 	}
 
 	h.Register(app)
