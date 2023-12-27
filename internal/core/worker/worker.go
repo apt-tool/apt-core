@@ -37,9 +37,9 @@ type worker struct {
 type (
 	// executeRequest is used to call ftp system
 	executeRequest struct {
-		Param      string `json:"param"`
-		Path       string `json:"path"`
-		DocumentID uint   `json:"document_id"`
+		Params     []string `json:"params"`
+		Path       string   `json:"path"`
+		DocumentID uint     `json:"document_id"`
 	}
 )
 
@@ -275,11 +275,21 @@ func (w worker) executeDoc(project *project.Project, doc *document.Document) err
 	doc.Result = enum.ResultUnknown
 	_ = w.models.Documents.Update(doc)
 
+	// create params for request
+	params := map[string]string{
+		"host": project.Host,
+	}
+
 	// create ftp request
 	tmp := executeRequest{
-		Param:      project.Host,
+		Params:     []string{},
 		Path:       doc.Instruction,
 		DocumentID: doc.ID,
+	}
+
+	// append params
+	for key := range params {
+		tmp.Params = append(tmp.Params, fmt.Sprintf("--%s", key), params[key])
 	}
 
 	// send ftp request
