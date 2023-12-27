@@ -308,7 +308,7 @@ func (w worker) executeDoc(project *project.Project, doc *document.Document) err
 		ProjectID:   project.ID,
 		DocumentID:  doc.ID,
 		Service:     "base-api/worker/ftp-server",
-		Description: fmt.Sprintf("Sending post request for `%s` attack.", doc.Instruction),
+		Description: fmt.Sprintf("Sending post request for `%s` attack: %s", doc.Instruction, buffer.String()),
 		Type:        enum.TrackInProgress,
 	})
 
