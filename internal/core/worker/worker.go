@@ -82,7 +82,7 @@ func (w worker) rerun(id int) {
 	_ = w.models.Tracks.Create(&track.Track{
 		ProjectID:   projectInstance.ID,
 		DocumentID:  documentID,
-		Service:     "base-api/worker",
+		Service:     "base-api/worker/rerun",
 		Description: "Got rerun request",
 		Type:        enum.TrackInProgress,
 	})
@@ -113,7 +113,7 @@ func (w worker) rerun(id int) {
 	_ = w.models.Tracks.Create(&track.Track{
 		ProjectID:   projectInstance.ID,
 		DocumentID:  doc.ID,
-		Service:     "base-api/worker",
+		Service:     "base-api/worker/rerun",
 		Description: fmt.Sprintf("Running the document on `%s` attack.", doc.Instruction),
 		Type:        enum.TrackInProgress,
 	})
@@ -160,7 +160,7 @@ func (w worker) execute(id int) {
 
 	_ = w.models.Tracks.Create(&track.Track{
 		ProjectID:   projectID,
-		Service:     "base-api/worker",
+		Service:     "base-api/worker/execute",
 		Description: fmt.Sprintf("Got attacks list from ftp-server: (%s)", strings.Join(manifests, ",")),
 		Type:        enum.TrackSuccess,
 	})
@@ -186,7 +186,7 @@ func (w worker) execute(id int) {
 
 	_ = w.models.Tracks.Create(&track.Track{
 		ProjectID:   projectID,
-		Service:     "base-api/worker",
+		Service:     "base-api/worker/scanner",
 		Description: "Running scanner",
 		Type:        enum.TrackInProgress,
 	})
@@ -199,14 +199,14 @@ func (w worker) execute(id int) {
 
 	_ = w.models.Tracks.Create(&track.Track{
 		ProjectID:   projectID,
-		Service:     "base-api/worker",
+		Service:     "base-api/worker/scanner",
 		Description: fmt.Sprintf("Vulnerabilities: (%s)", strings.Join(vulnerabilities, ",")),
 		Type:        enum.TrackSuccess,
 	})
 
 	_ = w.models.Tracks.Create(&track.Track{
 		ProjectID:   projectID,
-		Service:     "base-api/worker",
+		Service:     "base-api/worker/ai",
 		Description: "Running AI",
 		Type:        enum.TrackInProgress,
 	})
@@ -216,7 +216,7 @@ func (w worker) execute(id int) {
 
 	_ = w.models.Tracks.Create(&track.Track{
 		ProjectID:   projectID,
-		Service:     "base-api/worker",
+		Service:     "base-api/worker/ai",
 		Description: fmt.Sprintf("Attacks: (%s)", strings.Join(attacks, ",")),
 		Type:        enum.TrackSuccess,
 	})
@@ -248,7 +248,7 @@ func (w worker) execute(id int) {
 		_ = w.models.Tracks.Create(&track.Track{
 			ProjectID:   projectInstance.ID,
 			DocumentID:  doc.ID,
-			Service:     "base-api/worker",
+			Service:     "base-api/worker/ftp-server",
 			Description: fmt.Sprintf("Running the document on `%s` attack.", doc.Instruction),
 			Type:        enum.TrackInProgress,
 		})
