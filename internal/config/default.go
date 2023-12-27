@@ -18,6 +18,12 @@ func Default() Config {
 		},
 		Scanner: scanner.Config{
 			Command: "python scanner.py --host %s",
+			Enable:  false,
+			Defaults: []string{
+				"2fa",
+				"authentication",
+				"injection",
+			},
 		},
 		MySQL: sql.Config{
 			Host:     "127.0.0.1",

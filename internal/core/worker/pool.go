@@ -2,6 +2,7 @@ package worker
 
 import (
 	"github.com/ptaas-tool/base-api/internal/config"
+	"github.com/ptaas-tool/base-api/internal/config/scanner"
 	"log"
 
 	"github.com/ptaas-tool/base-api/internal/config/ftp"
@@ -11,10 +12,11 @@ import (
 )
 
 type Pool struct {
-	cfg    ftp.Config
-	ai     ai.Config
-	client client.HTTPClient
-	models *models.Interface
+	cfg     ftp.Config
+	ai      ai.Config
+	scanner scanner.Config
+	client  client.HTTPClient
+	models  *models.Interface
 
 	template string
 	capacity int
@@ -29,6 +31,7 @@ func New(cfg config.Config, client client.HTTPClient, models *models.Interface, 
 		ai:       cfg.AI,
 		cfg:      cfg.FTP,
 		client:   client,
+		scanner:  cfg.Scanner,
 		models:   models,
 		capacity: capacity,
 		template: template,
@@ -60,6 +63,7 @@ func (p *Pool) Register() {
 				ai:       &aiInstance,
 				cfg:      p.cfg,
 				client:   p.client,
+				scanner:  p.scanner,
 				models:   p.models,
 				channel:  p.channel,
 				reruns:   p.reruns,

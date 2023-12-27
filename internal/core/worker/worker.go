@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/ptaas-tool/base-api/internal/config/ftp"
+	scannerCfg "github.com/ptaas-tool/base-api/internal/config/scanner"
 	"github.com/ptaas-tool/base-api/internal/core/ai"
 	"github.com/ptaas-tool/base-api/internal/core/scanner"
 	"github.com/ptaas-tool/base-api/internal/utils/crypto"
@@ -27,6 +28,7 @@ type worker struct {
 	done     chan int
 	template string
 	cfg      ftp.Config
+	scanner  scannerCfg.Config
 	client   client.HTTPClient
 	models   *models.Interface
 	ai       *ai.AI
@@ -190,7 +192,7 @@ func (w worker) execute(id int) {
 	})
 
 	// start scanner
-	vulnerabilities, err := scanner.Scan(command)
+	vulnerabilities, err := scanner.Scan(command, w.scanner.Enable, w.scanner.Defaults...)
 	if err != nil {
 		log.Println(fmt.Errorf("[worker.execute] failed to scan host error=%w", err))
 	}

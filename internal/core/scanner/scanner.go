@@ -3,8 +3,18 @@ package scanner
 import "os/exec"
 
 // Scan a host by using apt-scanner
-func Scan(command string) ([]string, error) {
+func Scan(command string, enable bool, defaults ...string) ([]string, error) {
 	r := new(report)
+
+	// load default vulnerabilities
+	for _, tmp := range defaults {
+		r.vulnerabilities = append(r.vulnerabilities, tmp)
+	}
+
+	// check scanner enable
+	if !enable {
+		return r.vulnerabilities, nil
+	}
 
 	// execute command
 	cmd := exec.Command(command)
