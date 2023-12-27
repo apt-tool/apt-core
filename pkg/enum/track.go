@@ -12,14 +12,14 @@ const (
 func (t TrackType) ToString() string {
 	switch t {
 	case TrackSuccess:
-		return "success"
+		return "Successful event"
 	case TrackWarning:
-		return "warning"
+		return "Warning"
 	case TrackError:
-		return "danger"
+		return "Error event"
 	case TrackInProgress:
-		return "primary"
+		return "In-progress event"
 	default:
-		return "secondary"
+		return "Unknown event"
 	}
 }
