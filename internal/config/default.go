@@ -24,6 +24,7 @@ func Default() Config {
 				"authentication",
 				"injection",
 			},
+			Flags: []string{},
 		},
 		MySQL: sql.Config{
 			Host:     "127.0.0.1",

@@ -14,8 +14,21 @@ migrate:
   root: 'admin'
   pass: '12345'
   enable: false
+ai:
+  enable: true
+  method: "svm"
+  "limit": 10
+  "factor": 7
 scanner:
-  command: "python3 scanner.py --host %s"
+  enable: true
+  defaults:
+    - "2fa"
+  command: "python3 scanner.py"
+  flags:
+    - "host"
+    - "endpoints"
+    - "type"
+    - "protocol"
 ftp:
   host: 'http://localhost:9091'
   secret: 'secret'
