@@ -7,9 +7,9 @@ import (
 
 // Scanner object
 type Scanner struct {
-	command  string
-	enable   bool
-	defaults []string
+	Command  string
+	Enable   bool
+	Defaults []string
 }
 
 // Scan a host by using apt-scanner
@@ -17,12 +17,12 @@ func (s Scanner) Scan(params map[string]string) ([]string, error) {
 	r := new(report)
 
 	// load default vulnerabilities
-	for _, tmp := range s.defaults {
+	for _, tmp := range s.Defaults {
 		r.vulnerabilities = append(r.vulnerabilities, tmp)
 	}
 
 	// check scanner enable
-	if !s.enable {
+	if !s.Enable {
 		return r.vulnerabilities, nil
 	}
 
@@ -34,7 +34,7 @@ func (s Scanner) Scan(params map[string]string) ([]string, error) {
 	}
 
 	// execute command
-	cmd := exec.Command(s.command, flags...)
+	cmd := exec.Command(s.Command, flags...)
 	if err := cmd.Start(); err != nil {
 		return r.vulnerabilities, err
 	}

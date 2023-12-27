@@ -23,15 +23,15 @@ import (
 
 // worker is the smallest unit of our core
 type worker struct {
-	channel  chan int
-	reruns   chan int
-	done     chan int
-	template string
-	cfg      ftp.Config
-	scanner  scannerCfg.Config
-	client   client.HTTPClient
-	models   *models.Interface
-	ai       *ai.AI
+	channel chan int
+	reruns  chan int
+	done    chan int
+
+	cfg     ftp.Config
+	scanner scannerCfg.Config
+	client  client.HTTPClient
+	models  *models.Interface
+	ai      *ai.AI
 }
 
 type (
@@ -182,7 +182,6 @@ func (w worker) execute(id int) {
 	}
 
 	host := fmt.Sprintf("%s://%s:%d", prefix, projectInstance.Host, projectInstance.Port)
-	command := fmt.Sprintf(w.template, host)
 
 	_ = w.models.Tracks.Create(&track.Track{
 		ProjectID:   projectID,
@@ -192,7 +191,13 @@ func (w worker) execute(id int) {
 	})
 
 	// start scanner
-	vulnerabilities, err := scanner.Scan(command, w.scanner.Enable, w.scanner.Defaults...)
+	vulnerabilities, err := scanner.Scanner{
+		Enable:   w.scanner.Enable,
+		Defaults: w.scanner.Defaults,
+		Command:  w.scanner.Command,
+	}.Scan(map[string]string{
+		"host": host,
+	})
 	if err != nil {
 		log.Println(fmt.Errorf("[worker.execute] failed to scan host error=%w", err))
 	}
