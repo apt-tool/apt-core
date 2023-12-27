@@ -1,23 +1,40 @@
 package scanner
 
-import "os/exec"
+import (
+	"fmt"
+	"os/exec"
+)
+
+// Scanner object
+type Scanner struct {
+	command  string
+	enable   bool
+	defaults []string
+}
 
 // Scan a host by using apt-scanner
-func Scan(command string, enable bool, defaults ...string) ([]string, error) {
+func (s Scanner) Scan(params map[string]string) ([]string, error) {
 	r := new(report)
 
 	// load default vulnerabilities
-	for _, tmp := range defaults {
+	for _, tmp := range s.defaults {
 		r.vulnerabilities = append(r.vulnerabilities, tmp)
 	}
 
 	// check scanner enable
-	if !enable {
+	if !s.enable {
 		return r.vulnerabilities, nil
 	}
 
+	// command flags
+	flags := make([]string, 0)
+
+	for key := range params {
+		flags = append(flags, fmt.Sprintf("--%s", key), params[key])
+	}
+
 	// execute command
-	cmd := exec.Command(command)
+	cmd := exec.Command(s.command, flags...)
 	if err := cmd.Start(); err != nil {
 		return r.vulnerabilities, err
 	}
