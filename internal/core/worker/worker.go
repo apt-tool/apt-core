@@ -289,6 +289,14 @@ func (w worker) executeDoc(project *project.Project, doc *document.Document) err
 		fmt.Sprintf("x-token:%s", crypto.GetMD5Hash(w.cfg.Secret)),
 	}
 
+	_ = w.models.Tracks.Create(&track.Track{
+		ProjectID:   project.ID,
+		DocumentID:  doc.ID,
+		Service:     "base-api/worker/ftp-server",
+		Description: fmt.Sprintf("Sending post request for `%s` attack.", doc.Instruction),
+		Type:        enum.TrackInProgress,
+	})
+
 	// update document based of response
 	if response, httpError := w.client.Post(address, &buffer, headers...); httpError != nil {
 		log.Println(fmt.Errorf("[worker.executeDoc] failed to execute script error=%w", httpError))
@@ -317,6 +325,14 @@ func (w worker) executeDoc(project *project.Project, doc *document.Document) err
 
 	doc.ExecutionTime = time.Now().Sub(start)
 
+	_ = w.models.Tracks.Create(&track.Track{
+		ProjectID:   project.ID,
+		DocumentID:  doc.ID,
+		Service:     "base-api/worker/ftp-server",
+		Description: fmt.Sprintf("Got response for `%s` attack.", doc.Instruction),
+		Type:        enum.TrackSuccess,
+	})
+
 	_ = w.models.Documents.Update(doc)
 
 	return nil
@@ -327,7 +343,7 @@ func (w worker) exit(id int) {
 	_ = w.models.Tracks.Create(&track.Track{
 		ProjectID:   uint(id),
 		Service:     "base-api/worker",
-		Description: "Worker exit",
+		Description: fmt.Sprintf("Worker exit for %d.", id),
 		Type:        enum.TrackWarning,
 	})
 
