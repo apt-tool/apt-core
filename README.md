@@ -20,25 +20,38 @@ docker pull amirhossein21/ptaas-tool:base-v0.X.X
 Base API system config file (```config.yaml```) template is something like this:
 
 ```yaml
-core: # core api
+core:
   port: 9090
   enable: true
   workers: 1
   secret: "secret"
-mysql: # database
+mysql:
   host: 'localhost'
   port: 3306
   user: root
   pass: ''
   database: 'apt'
   migrate: false
-migrate: # migration commands
+migrate:
   root: 'admin'
   pass: '12345'
   enable: false
+ai:
+  enable: true
+  method: "svm"
+  "limit": 10
+  "factor": 7
 scanner:
-  command: ""
-ftp: # apt instructions service
+  enable: true
+  defaults:
+    - "2fa"
+  command: "python3 scanner.py"
+  flags:
+    - "host"
+    - "endpoints"
+    - "type"
+    - "protocol"
+ftp:
   host: 'http://localhost:9091'
   secret: 'secret'
   access: 'access'
